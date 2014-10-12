@@ -1,0 +1,38 @@
+{
+  "name": "jsonconf",
+  "version": "0.0.1",
+  "description": "Reloadable configuration from json files",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+   "files": [
+     "index.js"
+   ],
+  "dependencies": {
+    "q": "~1.0.1"
+  },
+  "devDependencies": {
+    "mocha": "1",
+    "should": "4",
+    "istanbul": "0"
+  },
+  "scripts": {
+    "test": "mocha --reporter spec",
+    "test-cov": "node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha",
+    "test-travis": "node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Artesonraju/jsonconf.git"
+  },
+  "keywords": [
+    "configuration"
+  ],
+  "author": "Etienne Molto",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Artesonraju/jsonconf/issues"
+  },
+  "homepage": "https://github.com/Artesonraju/jsonconf"
+}
