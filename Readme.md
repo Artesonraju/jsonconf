@@ -11,7 +11,7 @@ $ npm install jsonconf
 ## Example
 
 ```js
-var config = require('./');
+var config = require('jsonconf');
 var events = require('events');
 
 var emitter = new events.EventEmitter();
