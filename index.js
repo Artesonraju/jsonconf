@@ -4,9 +4,21 @@ var fs = require('fs');
 var assert = require('assert');
 var events = require('events');
 var util = require('util');
-var Q = require('q');
+var async = require('async');
 
-var readFile = Q.nfbind(fs.readFile);
+function readAndParse(filePath, callback) {
+    fs.readFile(filePath, 'utf8',function(err, data){
+      var res;
+      if(!err){
+        try{
+          res = JSON.parse(data);
+        } catch(error){
+          err = error;
+        }
+      }
+      callback(err, res);
+    });
+}
 
 /**
  * Config object
@@ -39,29 +51,23 @@ function Config() {
       filePaths = [filePaths];
     }
     assert(filePaths.length >= 1, 'configuration JSON filepath required');
-    
-    var promises = filePaths.map(
-      function(filePath) {
-        return new Q(filePath)
-        .then(readFile)
-        .then(function(data){
-          return JSON.parse(data);
-        });
-      });
-    Q.all(promises).then(function (objs){
-      var result = {};
-      objs.map(function (obj){
-        for(var prop in obj){
-          if(obj.hasOwnProperty(prop)){
-            result[prop] = obj[prop];
+
+    async.map(filePaths, readAndParse, function(err, objs) {
+      if(err){
+        eventEmitter.emit('error', err);
+      } else {
+        var result = {};
+        objs.map(function (obj){
+          for(var prop in obj){
+            if(obj.hasOwnProperty(prop)){
+              result[prop] = obj[prop];
+            }
           }
-        }
-      });
-      obj = result;
-      eventEmitter.emit('configLoaded', self);
-    })
-    .catch(function (err) {
-      eventEmitter.emit('error', err);
+        });
+        console.log(result);
+        obj = result;
+        eventEmitter.emit('configLoaded', self);
+      }
     });
   };
 }
