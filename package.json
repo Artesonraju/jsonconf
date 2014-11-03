@@ -1,6 +1,6 @@
 {
   "name": "jsonconf",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Reloadable configuration from json files",
   "main": "index.js",
   "directories": {
